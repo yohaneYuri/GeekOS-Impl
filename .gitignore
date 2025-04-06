@@ -1,5 +1,6 @@
 .devenv/
 .direnv/
 
-build/
+/**/build/*
+!/**/build/.bochsrc
 .vscode/
