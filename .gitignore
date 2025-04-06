@@ -1,6 +1,5 @@
-.devenv
-.direnv
-flake.lock
+.devenv/
+.direnv/
 
-*/build
-**/.vscode
+build/
+.vscode/
