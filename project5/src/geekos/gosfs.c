@@ -8,7 +8,7 @@
  */
 
 
-// This project took me 43 days to complete, from February 22, 2024 to April 6, 2024,
+// This project took me 43 days to complete, from February 22, 2025 to April 6, 2025,
 // more than 200 hours, an average of 8 hours a day, which almost exhausted all my energy, no holidays.
 // I wanted to say a lot, but when it was finished, I didn't know what to say, full of emotion.
 // Now I think the quality of my code is really worrying. Fixing bugs is like playing whack-a-mole.
@@ -1618,14 +1618,15 @@ static int GOSFS_Delete(struct Mount_Point *mountPoint, const char *path)
     dirPath = Get_Father_Dir_Path(path);
     if (dirPath == 0) goto memfail;
     rc = Lookup_File(fs, dirPath, &dirInodePtr, &dirInode);
-    Free(dirPath);
+    
     if (rc != 0) goto fail;
 
     // Remove the record in father directory's inode
     rc = Delete_Entry(dirInodePtr, inodePtr, fs);
     if (rc != 0) goto fail;
     while (Update_Inode_Cache(fs, dirPath, dirInodePtr) != 0);
-
+    Free(dirPath);
+    
     // Clean up resource
     rc = Dealloc_Inode(fs, inodePtr);
 
@@ -1636,6 +1637,7 @@ static int GOSFS_Delete(struct Mount_Point *mountPoint, const char *path)
 memfail:
     rc = ENOMEM;
 fail:
+    if (dirPath != 0) Free(dirPath);
     Mutex_Unlock(&fs->lock);
     return rc;
 }
